@@ -9,6 +9,7 @@ body {
   /* background-color: #192751; */
   background: linear-gradient(135deg, #192751, #1f44b5);
   color: #010101;
+  overflow: hidden;
 }
 
 img {
@@ -16,13 +17,15 @@ img {
   width: 100%;
   max-width: 150px;
   object-fit: contain;
+  max-height: 100vh;
 }
 
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  /* min-height: 100vh; */
+  height: 100vh;
 }
 
 .content {
