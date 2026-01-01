@@ -31,7 +31,7 @@ import java.util.List;
  * - DELETE /api/v1/credentials/{id} - Delete a credential
  */
 @RestController
-@RequestMapping("/api/v1/credentials")
+@RequestMapping("/v1/credentials")
 @RequiredArgsConstructor
 @Slf4j
 public class CredentialController {

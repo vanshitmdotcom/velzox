@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
  * - PUT /api/v1/auth/password - Change password
  */
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/v1/auth")
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {

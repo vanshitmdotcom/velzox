@@ -25,7 +25,7 @@ import java.util.Map;
  * - Uptime monitoring
  */
 @RestController
-@RequestMapping("/api/health")
+@RequestMapping("/health")
 @RequiredArgsConstructor
 public class HealthController {
 

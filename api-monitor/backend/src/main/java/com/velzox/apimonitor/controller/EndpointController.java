@@ -27,7 +27,7 @@ import java.util.List;
  * - PATCH /api/v1/endpoints/{id}/toggle - Enable/disable endpoint
  */
 @RestController
-@RequestMapping("/api/v1/endpoints")
+@RequestMapping("/v1/endpoints")
 @RequiredArgsConstructor
 @Slf4j
 public class EndpointController {

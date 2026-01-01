@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * - POST /api/v1/alerts/acknowledge-all - Acknowledge all alerts for an endpoint
  */
 @RestController
-@RequestMapping("/api/v1/alerts")
+@RequestMapping("/v1/alerts")
 @RequiredArgsConstructor
 @Slf4j
 public class AlertController {

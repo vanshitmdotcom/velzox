@@ -88,8 +88,9 @@ public class SecurityConfig {
             // Configure authorization rules
             .authorizeHttpRequests(auth -> auth
                 // Public endpoints - no authentication required
-                .requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers("/api/health").permitAll()
+                // Note: context path is /api, so paths here are relative to that
+                .requestMatchers("/v1/auth/**").permitAll()
+                .requestMatchers("/health/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/error").permitAll()
                 

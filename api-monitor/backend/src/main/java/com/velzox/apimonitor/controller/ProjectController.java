@@ -26,7 +26,7 @@ import java.util.List;
  * - DELETE /api/v1/projects/{id} - Delete a project
  */
 @RestController
-@RequestMapping("/api/v1/projects")
+@RequestMapping("/v1/projects")
 @RequiredArgsConstructor
 @Slf4j
 public class ProjectController {
