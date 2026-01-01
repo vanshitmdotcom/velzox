@@ -1,0 +1,187 @@
+# =============================================================================
+# API Monitor - Application Configuration
+# =============================================================================
+# This is the main configuration file for the API Monitoring Service.
+# For production deployment, override sensitive values using environment variables.
+# =============================================================================
+
+spring:
+  application:
+    name: api-monitor
+  
+  # =============================================================================
+  # Database Configuration
+  # =============================================================================
+  # Default: H2 in-memory database for development
+  # Production: Override with PostgreSQL connection details via environment variables
+  # =============================================================================
+  datasource:
+    url: ${DATABASE_URL:jdbc:h2:mem:apimonitor;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}
+    username: ${DATABASE_USERNAME:sa}
+    password: ${DATABASE_PASSWORD:}
+    driver-class-name: ${DATABASE_DRIVER:org.h2.Driver}
+  
+  # H2 Console for development (disable in production)
+  h2:
+    console:
+      enabled: ${H2_CONSOLE_ENABLED:true}
+      path: /h2-console
+  
+  # =============================================================================
+  # JPA/Hibernate Configuration
+  # =============================================================================
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:update}
+    show-sql: ${JPA_SHOW_SQL:false}
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: ${HIBERNATE_DIALECT:org.hibernate.dialect.H2Dialect}
+    open-in-view: false
+  
+  # =============================================================================
+  # Email Configuration (for alerts)
+  # =============================================================================
+  # Configure SMTP settings for sending alert emails
+  # =============================================================================
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+    # Default sender address for alert emails
+    from: ${MAIL_FROM:noreply@apimonitor.velzox.com}
+
+# =============================================================================
+# Server Configuration
+# =============================================================================
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /api
+
+# =============================================================================
+# Application-Specific Configuration
+# =============================================================================
+app:
+  # JWT Security Settings
+  jwt:
+    secret: ${JWT_SECRET:your-256-bit-secret-key-for-jwt-token-signing-change-in-production}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}  # 24 hours
+  
+  # Encryption key for storing sensitive credentials (API keys, tokens)
+  # IMPORTANT: Change this in production and keep it secure!
+  encryption:
+    secret: ${ENCRYPTION_SECRET:your-32-character-encryption-key!}
+  
+  # =============================================================================
+  # Monitoring Configuration
+  # =============================================================================
+  monitoring:
+    # Default timeout for HTTP requests (in milliseconds)
+    default-timeout-ms: ${MONITORING_TIMEOUT_MS:30000}
+    
+    # Maximum concurrent checks allowed
+    max-concurrent-checks: ${MAX_CONCURRENT_CHECKS:100}
+    
+    # Thread pool size for async monitoring tasks
+    thread-pool-size: ${MONITORING_THREAD_POOL_SIZE:20}
+    
+    # Maximum request body size in bytes (1KB default)
+    max-body-size-bytes: ${MAX_BODY_SIZE_BYTES:1024}
+  
+  # =============================================================================
+  # Alert Configuration
+  # =============================================================================
+  alerting:
+    # Consecutive failures before triggering alert
+    failure-threshold: ${ALERT_FAILURE_THRESHOLD:3}
+    
+    # Minimum time between duplicate alerts (in minutes)
+    deduplication-window-minutes: ${ALERT_DEDUP_WINDOW_MINUTES:15}
+    
+    # Enable/disable email alerts globally
+    email-enabled: ${ALERT_EMAIL_ENABLED:true}
+  
+  # =============================================================================
+  # Plan Limits (Tier-based restrictions)
+  # =============================================================================
+  plans:
+    free:
+      max-endpoints: 2
+      check-interval-seconds: 300  # 5 minutes
+      history-days: 1
+      slack-enabled: false
+    starter:
+      max-endpoints: 10
+      check-interval-seconds: 60   # 1 minute
+      history-days: 7
+      slack-enabled: false
+    pro:
+      max-endpoints: 50
+      check-interval-seconds: 30   # 30 seconds
+      history-days: 30
+      slack-enabled: true
+
+# =============================================================================
+# Logging Configuration
+# =============================================================================
+logging:
+  level:
+    root: INFO
+    com.velzox.apimonitor: ${LOG_LEVEL:DEBUG}
+    org.springframework.web: INFO
+    org.hibernate.SQL: ${SQL_LOG_LEVEL:WARN}
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# =============================================================================
+# CORS Configuration (for frontend)
+# =============================================================================
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173}
+  allowed-methods: GET,POST,PUT,DELETE,PATCH,OPTIONS
+  allowed-headers: "*"
+  allow-credentials: true
+
+---
+# =============================================================================
+# Production Profile
+# =============================================================================
+spring:
+  config:
+    activate:
+      on-profile: production
+  
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  
+  h2:
+    console:
+      enabled: false
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    com.velzox.apimonitor: INFO
+    org.hibernate.SQL: WARN

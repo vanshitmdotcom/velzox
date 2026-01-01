@@ -1,0 +1,29 @@
+# =============================================================================
+# API Monitor - Project .gitignore
+# =============================================================================
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+*.local
+
+# Logs
+*.log
+logs/
+
+# Docker volumes
+postgres_data/
+
+# Temporary files
+*.tmp
+*.swp
+*~
