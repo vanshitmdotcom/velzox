@@ -104,6 +104,22 @@ services:
     networks:
       - api-monitor-network
 
+  # ===========================================================================
+  # pgAdmin - Database Management UI
+  # ===========================================================================
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: api-monitor-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - api-monitor-network
+
 # =============================================================================
 # Volumes
 # =============================================================================
